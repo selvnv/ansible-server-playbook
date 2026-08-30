@@ -1,0 +1,7 @@
+
+
+- name: Update cache
+  ansible.builtin.import_tasks: 01_update_cache.yml
+
+- name: Install apt packages
+  ansible.builtin.import_tasks: 02_install.yml

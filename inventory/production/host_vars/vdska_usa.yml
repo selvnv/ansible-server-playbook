@@ -1,0 +1,2 @@
+apt_package_list:
+  - curl
