@@ -1,12 +1,13 @@
 ### Роли, которые используются
-Установка и удаление пакетов: ansible.builtin.apt
-Управление сервисами: ansible.builtin.systemd
-Управление файлами и каталогами на хосте: ansible.builtin.file
-Рендер файлов конфигурации (для шаблонизации): ansible.builtin.template
-Копирование файлов на хост: ansible.builtin.copy
-Управление пользователями: ansible.builtin.user
-Настройка фаервола (`ufw`): community.general.ufw
-Выполнение специфических команд: ansible.builtin.command или ansible.builtin.shell
+
+- Установка и удаление пакетов: `ansible.builtin.apt`
+- Управление сервисами: `ansible.builtin.systemd`
+- Управление файлами и каталогами на хосте: `ansible.builtin.file`
+- Рендер файлов конфигурации (для шаблонизации): `ansible.builtin.template`
+- Копирование файлов на хост: `ansible.builtin.copy`
+- Управление пользователями: `ansible.builtin.user`
+- Настройка фаервола (`ufw`): `community.general.ufw`
+- Выполнение специфических команд: `ansible.builtin.command` или `ansible.builtin.shell`
 
 ### Механизмы Ansible
 
