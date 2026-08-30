@@ -1,0 +1,3 @@
+services_root: /services
+services_apps_root: "{{ services_root }}/apps"
+services_logs_root: "{{ services_root }}/logs"

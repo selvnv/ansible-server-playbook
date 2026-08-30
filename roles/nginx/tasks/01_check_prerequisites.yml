@@ -1,0 +1,6 @@
+- name: Check if Nginx package presents
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  check_mode: true
+  register: nginx_register_package_not_presents

@@ -1,0 +1,12 @@
+nginx_check_package_present: true
+nginx_create_dirs: true
+nginx_start_service: true
+nginx_static_catalogs: []
+
+nginx_pid_path: /run/nginx.pid
+nginx_err_log_path: /var/log/nginx/error.log
+nginx_access_log_path: /var/log/nginx/access.log
+nginx_mime_types_path: /etc/nginx/mime.types
+nginx_include_conf_path_list:
+  - /etc/nginx/conf.d/*.conf
+  - /etc/nginx/sites-enabled/*

@@ -3,3 +3,13 @@ apt_package_list:
   - fail2ban
   - nginx
   - certbot
+
+nginx_static_catalogs:
+  - path: /services/apps/nginx/static
+    owner: www-data
+    group: www-data
+    mode: "0755"
+  - path: /services/apps/nginx/conf
+    owner: www-data
+    group: www-data
+    mode: "0755"
