@@ -1,2 +1,5 @@
 apt_package_list:
   - curl
+  - fail2ban
+  - nginx
+  - certbot
