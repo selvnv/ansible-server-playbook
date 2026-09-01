@@ -1,5 +1,5 @@
 # Установить пакеты по списку
 - name: Install packages
   ansible.builtin.apt:
-    name: "{{ apt_package_list }}"
+    name: "{{ packages_apt_install_list }}"
     state: present

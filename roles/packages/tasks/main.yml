@@ -5,3 +5,11 @@
 - name: Install apt packages
   ansible.builtin.import_tasks: 02_install.yml
   when: packages_install | bool
+
+- name: Remove apt packages
+  ansible.builtin.import_tasks: 03_remove.yml
+  when: packages_remove | bool
+
+- name: Upgrade apt packages
+  ansible.builtin.import_tasks: 04_upgrade.yml
+  when: packages_upgrade | bool

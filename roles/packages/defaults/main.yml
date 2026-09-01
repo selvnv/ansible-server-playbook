@@ -1,3 +1,8 @@
-apt_package_list: []
+packages_apt_install_list: []
+packages_apt_remove_list: []
+packages_apt_upgrade_list: []
+
 packages_update_cache: true
 packages_install: true
+packages_remove: false
+packages_upgrade: false

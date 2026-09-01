@@ -1,0 +1,5 @@
+# Обновить пакеты по списку (установит, если отсутствуют)
+- name: Upgrade packages
+  ansible.builtin.apt:
+    name: "{{ packages_apt_upgrade_list }}"
+    state: latest

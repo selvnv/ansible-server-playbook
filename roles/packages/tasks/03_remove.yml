@@ -1,0 +1,5 @@
+# Удалить пакеты по списку, если присутствуют
+- name: Remove packages
+  ansible.builtin.apt:
+    name: "{{ packages_apt_remove_list }}"
+    state: absent
