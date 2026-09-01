@@ -1,0 +1,11 @@
+- name: Set hostname
+  ansible.builtin.import_tasks: 01_set_hostname.yml
+  when: common_set_hostname | bool
+
+- name: Create users
+  ansible.builtin.import_tasks: 02_create_users.yml
+  when: common_create_users | bool
+
+- name: Create catalogs
+  ansible.builtin.import_tasks: 03_create_catalogs.yml
+  when: common_create_catalogs | bool
