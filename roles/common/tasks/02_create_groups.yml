@@ -1,0 +1,6 @@
+- name: Create groups
+  ansible.builtin.group:
+    name: "{{ item.group }}"
+    gid: "{{ item.gid | default(omit) }}"
+    state: present
+  loop: "{{ common_group_list }}"

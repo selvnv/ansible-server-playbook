@@ -1,6 +1,8 @@
 common_catalog_list: []
+common_group_list: []
 common_user_list: []
 
 common_set_hostname: true
+common_create_groups: true
 common_create_users: true
 common_create_catalogs: true
