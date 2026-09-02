@@ -1,5 +1,4 @@
 - name: Verify configs and reload ssh
-  become: true
   listen: "Verify configs and reload ssh"
   block:
     - name: Verify ssh configs

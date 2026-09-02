@@ -1,1 +1,14 @@
-Include {{ ssh_sshd_config_include_path }}
+
+{% for path in ssh_include_list%}
+    Include {{ path }}
+{% endfor %}
+
+UsePAM {{ ssh_use_pam }}
+
+Subsystem {{ ssh_subsystem }}
+
+X11Forwarding {{ ssh_x11forwarding }}
+
+PrintMotd {{ ssh_print_motd }}
+
+AcceptEnv {{ ssh_accept_env }}
