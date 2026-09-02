@@ -1,0 +1,7 @@
+- name: SSH Render configs
+  ansible.builtin.import_tasks: 01_render_config.yml
+  when: ssh_render_configs | bool
+
+- name: SSH Restart service
+  ansible.builtin.import_tasks: 02_restart_service.yml
+  when: ssh_restart_service | bool

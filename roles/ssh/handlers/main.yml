@@ -1,0 +1,16 @@
+- name: Verify configs and reload ssh
+  become: true
+  listen: "Verify configs and reload ssh"
+  block:
+    - name: Verify ssh configs
+      ansible.builtin.command:
+        cmd: sshd -t
+      changed_when: false
+      register: ssh_is_config_valid
+      failed_when: ssh_is_config_valid.rc != 0
+
+    - name: Reload ssh service
+      ansible.builtin.systemd:
+        name: ssh
+        state: reloaded
+      when: ssh_is_config_valid.rc == 0

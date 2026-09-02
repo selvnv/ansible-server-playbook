@@ -1,0 +1,10 @@
+ssh_permit_root_login: "no"
+ssh_password_authentication: "no"
+ssh_permit_empty_passwords: "no"
+ssh_pubkey_authentication: "yes"
+ssh_port: "22"
+
+ssh_sshd_config_include_path: "/etc/ssh/sshd_config.d/*.conf"
+
+ssh_render_configs: true
+ssh_restart_service: false
