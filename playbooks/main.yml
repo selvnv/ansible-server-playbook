@@ -1,0 +1,20 @@
+- name: Run common role
+  hosts:
+    - production
+  become: true
+  roles:
+    - common
+
+- name: Run packages role
+  hosts:
+    - production
+  become: true
+  roles:
+    - packages
+
+- name: Run ssh role
+  hosts:
+    - production
+  become: true
+  roles:
+    - ssh
