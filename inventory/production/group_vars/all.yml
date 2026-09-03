@@ -1,3 +1,31 @@
 services_root: /services
 services_apps_root: "{{ services_root }}/apps"
 services_logs_root: "{{ services_root }}/logs"
+services_home_root: "{{ services_root }}/home"
+
+common_group_list:
+  - group: "nonroot"
+    gid: 20001
+
+common_user_list:
+  - name: nonroot
+    group: nonroot
+    home: "{{ services_home_root }}/nonroot"
+
+common_catalog_list:
+  - path: "{{ services_root }}"
+    owner: root
+    group: root
+    mode: "0755"
+  - path: "{{ services_apps_root }}"
+    owner: root
+    group: root
+    mode: "0755"
+  - path: "{{ services_logs_root }}"
+    owner: root
+    group: root
+    mode: "0755"
+  - path: "{{ services_home_root }}"
+    owner: root
+    group: root
+    mode: "0755"
