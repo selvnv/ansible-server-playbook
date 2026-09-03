@@ -1,15 +1,8 @@
-apt_package_list:
+packages_apt_install_list:
   - curl
+  - git
   - fail2ban
   - nginx
   - certbot
-
-nginx_static_catalogs:
-  - path: /services/apps/nginx/static
-    owner: www-data
-    group: www-data
-    mode: "0755"
-  - path: /services/apps/nginx/conf
-    owner: www-data
-    group: www-data
-    mode: "0755"
+  - python3-certbot-nginx
+  - ufw

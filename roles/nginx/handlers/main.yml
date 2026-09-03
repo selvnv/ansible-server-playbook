@@ -1,0 +1,15 @@
+- name: Verify configs and reload nginx
+  listen: "Verify configs and reload nginx"
+  block:
+    - name: Verify nginx configs
+      ansible.builtin.command:
+        cmd: nginx -t
+      changed_when: false
+      register: nginx_is_config_valid
+      failed_when: nginx_is_config_valid.rc != 0
+
+    - name: Reload nginx service
+      ansible.builtin.systemd:
+        name:  "nginx@{{ nginx_instance }}"
+        state: reloaded
+      when: nginx_is_config_valid.rc == 0

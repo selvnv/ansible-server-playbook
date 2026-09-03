@@ -5,4 +5,4 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
-  loop: "{{ nginx_static_catalogs }}"
+  loop: "{{ nginx_catalogs }}"

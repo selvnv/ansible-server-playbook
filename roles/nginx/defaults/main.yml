@@ -1,12 +1,53 @@
 nginx_check_package_present: true
 nginx_create_dirs: true
 nginx_start_service: true
-nginx_static_catalogs: []
 
-nginx_pid_path: /run/nginx.pid
-nginx_err_log_path: /var/log/nginx/error.log
-nginx_access_log_path: /var/log/nginx/access.log
-nginx_mime_types_path: /etc/nginx/mime.types
+nginx_instance: "default"
+
+nginx_static_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/static"
+nginx_conf_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/conf"
+nginx_var_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/var"
+nginx_log_root: "{{ services_logs_root }}/nginx/{{ nginx_instance }}"
+
+nginx_sites_available: "{{ nginx_conf_root }}/sites-available"
+nginx_sites_enabled: "{{ nginx_conf_root }}/sites-enabled"
+
+nginx_conf_d: "{{ nginx_conf_root }}/conf.d"
+
+nginx_catalogs:
+  - path: "{{ nginx_static_root }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+  - path: "{{ nginx_conf_root }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+  - path: "{{ nginx_var_root }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+  - path: "{{ nginx_log_root }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+  - path: "{{ nginx_sites_available }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+  - path: "{{ nginx_sites_enabled }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+  - path: "{{ nginx_conf_d }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+
+nginx_pid_path: "{{ nginx_var_root }}/nginx.pid"
+nginx_err_log_path: "{{ nginx_log_root }}/error.log"
+nginx_access_log_path: "{{ nginx_log_root }}/access.log"
+nginx_mime_types_path: "{{ nginx_conf_root }}/mime.types"
 nginx_include_conf_path_list:
-  - /etc/nginx/conf.d/*.conf
-  - /etc/nginx/sites-enabled/*
+  - "{{ nginx_conf_d }}/*.conf"
+  - "{{ nginx_sites_enabled }}/*"
