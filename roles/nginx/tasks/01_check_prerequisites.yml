@@ -1,6 +1,8 @@
-- name: Check if Nginx package presents
-  ansible.builtin.apt:
-    name: nginx
-    state: present
-  check_mode: true
-  register: nginx_register_package_not_presents
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+
+- name: Fail if Nginx is not installed
+  ansible.builtin.fail:
+    msg: "Nginx is not installed on {{ inventory_hostname }}"
+  when: "'nginx' not in ansible_facts.packages"

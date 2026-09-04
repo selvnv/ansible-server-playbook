@@ -1,0 +1,17 @@
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name {{ nginx_server_name }};
+
+    ssl_certificate /etc/letsencrypt/live/{{ nginx_server_name }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ nginx_server_name }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    root /var/www/{{ nginx_server_name }};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

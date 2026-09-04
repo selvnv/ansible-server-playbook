@@ -18,3 +18,10 @@
   become: true
   roles:
     - ssh
+
+- name: Run nginx role
+  hosts:
+    - production
+  become: true
+  roles:
+    - nginx

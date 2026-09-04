@@ -1,0 +1,48 @@
+- name: Template nginx.conf
+  ansible.builtin.template:
+    src: "{{ inventory_hostname }}/nginx.conf"
+    dest: "{{ nginx_conf_root }}/nginx.conf"
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Verify configs and reload nginx
+
+- name: Copy mime types
+  ansible.builtin.copy:
+    src: "mime.types"
+    dest: "{{ nginx_mime_types_path }}"
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: Template conf.d instance configs
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ nginx_conf_d }}/{{ item.path | regex_replace('\\.j2$', '.conf') }}"
+    mode: "0644"
+    owner: root
+    group: root
+    backup: true
+  with_filetree: "{{ role_path }}/templates/{{ inventory_hostname }}/{{ nginx_instance }}/conf.d"
+  when: item.state == 'file'
+  notify: Verify configs and reload nginx
+
+- name: Template sites-available instance configs
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ nginx_sites_available }}/{{ item.path | regex_replace('\\.j2$', '.conf') }}"
+    mode: "0644"
+    owner: root
+    group: root
+    backup: true
+  with_filetree: "{{ role_path }}/templates/{{ inventory_hostname }}/{{ nginx_instance }}/sites-available"
+  when: item.state == 'file'
+  notify: Verify configs and reload nginx
+
+- name: Create sites-enabled links
+  ansible.builtin.file:
+    src: "{{ item.target }}"
+    dest: "{{ item.link }}"
+    state: link
+  loop: "{{ sites_enabled_list }}"
+  notify: Verify configs and reload nginx

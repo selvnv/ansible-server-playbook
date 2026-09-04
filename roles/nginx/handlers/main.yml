@@ -3,13 +3,13 @@
   block:
     - name: Verify nginx configs
       ansible.builtin.command:
-        cmd: nginx -t
+        cmd: /usr/sbin/nginx -t -c {{ nginx_conf_root }}/nginx.conf
       changed_when: false
       register: nginx_is_config_valid
       failed_when: nginx_is_config_valid.rc != 0
 
     - name: Reload nginx service
       ansible.builtin.systemd:
-        name:  "nginx@{{ nginx_instance }}"
+        name:  "nginx.{{ nginx_instance }}"
         state: reloaded
       when: nginx_is_config_valid.rc == 0

@@ -1,0 +1,19 @@
+- name: Load instance variables
+  ansible.builtin.include_vars:
+    file: "{{ role_path }}/vars/{{ nginx_instance }}.yml"
+
+- name: Check prerequisites
+  ansible.builtin.import_tasks: 01_check_prerequisites.yml
+  when: nginx_check_prerequisites | bool
+
+- name: Create catalogs
+  ansible.builtin.import_tasks: 02_create_catalogs.yml
+  when: nginx_create_catalogs | bool
+
+- name: Template configs
+  ansible.builtin.import_tasks: 03_template_configs.yml
+  when: nginx_template_configs | bool
+
+- name: Deploy service
+  ansible.builtin.import_tasks: 04_template_service.yml
+  when: nginx_template_service | bool

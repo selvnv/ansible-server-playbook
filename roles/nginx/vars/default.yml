@@ -1,0 +1,5 @@
+nginx_server_name: "selfplace.ru"
+
+sites_enabled_list:
+  - { target: "{{ nginx_sites_available }}/80.conf", link: "{{ nginx_sites_enabled }}/80.conf" }
+  - { target: "{{ nginx_sites_available }}/443.conf", link: "{{ nginx_sites_enabled }}/443.conf" }
