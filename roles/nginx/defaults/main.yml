@@ -1,6 +1,7 @@
 nginx_check_prerequisites: true
 nginx_create_catalogs: true
 nginx_issue_certificates: true
+nginx_generate_dhparams: true
 nginx_template_configs: true
 nginx_template_static: true
 nginx_template_service: true

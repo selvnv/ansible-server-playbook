@@ -6,3 +6,4 @@ packages_apt_install_list:
   - certbot
   - python3-certbot-nginx
   - ufw
+  - openssl

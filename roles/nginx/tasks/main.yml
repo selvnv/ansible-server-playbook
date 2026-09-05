@@ -19,14 +19,18 @@
   ansible.builtin.import_tasks: 03_issue_certificates.yml
   when: nginx_issue_certificates | bool
 
+- name: Generate dhparams
+  ansible.builtin.import_tasks: 04_generate_dhparams.yml
+  when: nginx_generate_dhparams | bool
+
 - name: Template configs
-  ansible.builtin.import_tasks: 04_template_configs.yml
+  ansible.builtin.import_tasks: 05_template_configs.yml
   when: nginx_template_configs | bool
 
 - name: Template static
-  ansible.builtin.import_tasks: 05_template_static.yml
+  ansible.builtin.import_tasks: 06_template_static.yml
   when: nginx_template_static | bool
 
 - name: Deploy service
-  ansible.builtin.import_tasks: 06_template_service.yml
+  ansible.builtin.import_tasks: 07_template_service.yml
   when: nginx_template_service | bool
