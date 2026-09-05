@@ -28,7 +28,7 @@ nginx_catalog_list:
   - { path: "{{ nginx_log_root }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_common }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_conf_d }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_ssl }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_ssl }}", owner: "root", group: "www-data", mode: "0755" }
 
 nginx_pid_path: "{{ nginx_var_root }}/nginx.pid"
 nginx_err_log_path: "{{ nginx_log_root }}/error.log"

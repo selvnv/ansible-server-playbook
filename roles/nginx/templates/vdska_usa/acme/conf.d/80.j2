@@ -1,0 +1,14 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+
+    # location for ACME-challenge
+    location ^~ /.well-known/acme-challenge/ {
+        root {{ nginx_static_root }};
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}

@@ -1,0 +1,9 @@
+- name: Ensure email variable is defined
+  fail:
+    msg: "Required variable 'nginx_certbot_email' (pass via -e nginx_certbot_email=<name>)"
+  when: nginx_certbot_email is undefined
+
+- name: Check if certificate already exists
+  ansible.builtin.stat:
+    path: "{{ nginx_ssl_certificate }}"
+  register: nginx_cert_stat

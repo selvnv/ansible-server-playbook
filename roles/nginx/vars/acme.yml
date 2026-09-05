@@ -1,0 +1,2 @@
+nginx_include_conf_list:
+  - "{{ nginx_conf_d }}/80.conf"
