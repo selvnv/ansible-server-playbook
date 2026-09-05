@@ -1,0 +1,9 @@
+- name: Set default incoming policy
+  community.general.ufw:
+    direction: "incoming"
+    policy: "{{ firewall_default_incoming_policy }}"
+
+- name: Set default outgoing policy
+  community.general.ufw:
+    direction: "outgoing"
+    policy: "{{ firewall_default_outgoing_policy }}"

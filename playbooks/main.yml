@@ -19,6 +19,13 @@
   roles:
     - ssh
 
+- name: Run firewall role
+  hosts:
+    - production
+  become: true
+  roles:
+    - firewall
+
 - name: Run nginx role
   hosts:
     - production

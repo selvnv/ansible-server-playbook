@@ -1,0 +1,12 @@
+firewall_check_prerequisites: true
+firewall_set_rules: true
+firewall_default_policy: true
+firewall_enable: true
+
+firewall_default_incoming_policy: "deny"
+firewall_default_outgoing_policy: "allow"
+
+firewall_allow_rules_list:
+  - { port: 24762, proto: "tcp", rule: "limit", comment: "allow ssh" }
+  - { port: 443, proto: "tcp", rule: "allow", comment: "allow https" }
+  - { port: 80, proto: "tcp", rule: "allow", comment: "allow http" }

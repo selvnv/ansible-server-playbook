@@ -1,0 +1,8 @@
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+
+- name: Fail if ufw is not installed
+  ansible.builtin.fail:
+    msg: "ufw is not installed on {{ inventory_hostname }}"
+  when: "'ufw' not in ansible_facts.packages"
