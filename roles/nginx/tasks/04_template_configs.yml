@@ -11,7 +11,7 @@
 
 - name: Template nginx.conf
   ansible.builtin.template:
-    src: "{{ inventory_hostname }}/nginx.j2"
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/nginx.j2"
     dest: "{{ nginx_conf_root }}/nginx.conf"
     mode: "0644"
     owner: root
