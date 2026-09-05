@@ -1,3 +1,8 @@
+- name: Ensure instance variable is defined
+  fail:
+    msg: "Required variable 'nginx_instance' (pass via -e nginx_instance=<name>)"
+  when: nginx_instance is undefined
+
 - name: Load instance variables
   ansible.builtin.include_vars:
     file: "{{ role_path }}/vars/{{ nginx_instance }}.yml"

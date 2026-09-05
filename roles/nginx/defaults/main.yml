@@ -5,8 +5,6 @@ nginx_template_configs: true
 nginx_template_static: true
 nginx_template_service: true
 
-nginx_instance: "default"
-
 nginx_static_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/static"
 nginx_conf_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/conf"
 nginx_var_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/var"
