@@ -34,4 +34,4 @@ nginx_pid_path: "{{ nginx_var_root }}/nginx.pid"
 nginx_err_log_path: "{{ nginx_log_root }}/error.log"
 nginx_access_log_path: "{{ nginx_log_root }}/access.log"
 nginx_mime_types_path: "{{ nginx_conf_root }}/mime.types"
-nginx_include_conf_path_list: []
+nginx_include_conf_list: []
