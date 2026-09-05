@@ -2,6 +2,7 @@ nginx_check_prerequisites: true
 nginx_create_catalogs: true
 nginx_issue_certificates: true
 nginx_template_configs: true
+nginx_template_static: true
 nginx_template_service: true
 
 nginx_instance: "default"
@@ -17,7 +18,7 @@ nginx_common: "{{ nginx_conf_root }}/common"
 # Server certificates, keys  etc.
 nginx_ssl: "{{ nginx_conf_root }}/ssl"
 
-ngxin_ssl_certificate: "{{ nginx_ssl }}/cert.pem"
+nginx_ssl_certificate: "{{ nginx_ssl }}/cert.pem"
 nginx_ssl_certificate_key: "{{ nginx_ssl }}/key.pem"
 nginx_ssl_dhparams: "{{ nginx_ssl }}/dhparams.pem"
 
