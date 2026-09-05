@@ -1,10 +1,9 @@
 - name: Template static files
   ansible.builtin.template:
     src: "{{ item.src }}"
-    dest: "{{ nginx_static_root }}/{{ item.path | regex_replace('\\.j2$', '.conf') }}"
+    dest: "{{ nginx_static_root }}/{{ item.path }}"
     mode: "0644"
-    owner: root
-    group: root
+    owner: www-data
+    group: www-data
   with_filetree: "{{ role_path }}/templates/{{ inventory_hostname }}/{{ nginx_instance }}/static"
-  when: item.state == 'file' and item.path.endswith('.j2')
-  notify: Verify configs and reload nginx
+  when: item.state == 'file'
