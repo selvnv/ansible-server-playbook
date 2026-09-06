@@ -9,6 +9,8 @@ nginx_template_service: true
 # instance for ACME-challenge
 nginx_acme_instance: "acme"
 
+nginx_use_custom_cert: false
+
 nginx_static_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/static"
 nginx_conf_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/conf"
 nginx_var_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/var"
@@ -22,8 +24,8 @@ nginx_ssl: "{{ nginx_conf_root }}/ssl"
 # ACME-challenges data for all instances
 nginx_acme_root: "{{ services_apps_root }}/nginx/{{ nginx_acme_instance }}/static"
 
-nginx_ssl_certificate: "{{ nginx_ssl }}/live/{{ nginx_server_name }}/fullchain.pem"
-nginx_ssl_certificate_key: "{{ nginx_ssl }}/live/{{ nginx_server_name }}/privkey.pem"
+nginx_ssl_certificate: "{{ (nginx_ssl ~ '/cert.pem') if nginx_use_custom_cert else (nginx_ssl ~ '/live/' ~ nginx_server_name ~ '/fullchain.pem') }}"
+nginx_ssl_certificate_key: "{{ (nginx_ssl ~ '/key.pem') if nginx_use_custom_cert else (nginx_ssl ~ '/live/' ~ nginx_server_name ~ '/privkey.pem') }}"
 nginx_ssl_dhparams: "{{ nginx_ssl }}/dhparams.pem"
 
 nginx_catalog_list:

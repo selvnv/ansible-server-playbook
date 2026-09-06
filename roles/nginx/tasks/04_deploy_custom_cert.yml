@@ -1,0 +1,15 @@
+- name: Deploy custom certificate
+  ansible.builtin.copy:
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/ssl/cert.pem"
+    dest: "{{ nginx_ssl }}/cert.pem"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy custom private key
+  ansible.builtin.copy:
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/ssl/key.pem"
+    dest: "{{ nginx_ssl }}/key.pem"
+    owner: root
+    group: root
+    mode: "0600"
