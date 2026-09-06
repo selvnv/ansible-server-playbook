@@ -79,4 +79,13 @@ ansible-playbook -e nginx_instance=<server_name> playbooks/main.yml
 
 - A-запись домена указывает на хост (нужно для получения сертификата на домен).
 - Доступ по SSH (указать пользователя и порт в `inventory/production/hosts`, под которыми к хосту подключается Ansible) и настроить sudo без пароля для пользователя, под которым Ansible подключается к хосту (для работы `become: true` в плейбуке).
+
+```bash
+sudo useradd -m -s /bin/bash -c "User for setup host via Ansible" -G sudo ansible
+```
+
+```
+ansible ALL=(ALL:ALL) NOPASSWD: ALL
+```
+
 - Указать пакеты, каталоги и правила — в `inventory/production/group_vars/all.yml`, `host_vars/<host>.yml`.
