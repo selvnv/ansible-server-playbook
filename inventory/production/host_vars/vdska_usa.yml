@@ -7,3 +7,5 @@ packages_apt_install_list:
   - python3-certbot-nginx
   - ufw
   - openssl
+
+ssh_port: "24762"
