@@ -7,7 +7,7 @@
 
 | Роль | Что делает |
 |---|---|
-| `common` | Базовая настройка хоста: сооздание групп, пользователей, базовых каталогов и т.д. |
+| `common` | Базовая настройка хоста: создание групп, пользователей, базовых каталогов и т.д. |
 | `packages` | Установка / удаление / обновление apt-пакетов |
 | `ssh` | Настройка конфигурации `ssh` |
 | `firewall` | Настройка правил `ufw` |
@@ -20,7 +20,7 @@
 Типовые инстансы:
 
 - `acme` — nginx на порту 80, один на хост. Нужен для выпуска  Let's Encrypt сертификатов.
-- `<nginx_server_name>` — виртуальный хост на порту 443 (сертификат — через certbot или собственный).
+- `<server_name>` — виртуальный хост на порту 443 (сертификат — через certbot или собственный).
 
 Структура каталогов инстанса:
 
@@ -45,7 +45,7 @@
 ## Переменные для запуска
 
 - `nginx_instance` — **обязательно**. Примеры: `acme`, `<server_name>`.
-- `nginx_certbot_email` — обязательно при выпуске сертификата на домен через Let's Encrypt (не нужно для `acme` инстанса и не нужно, если сертификат уже выпущен: `nginx_use_custom_cert: true`).
+- `nginx_certbot_email` — обязательно при выпуске сертификата на домен через Let's Encrypt (не нужно для `acme` инстанса и не нужно, если используется собственный сертификат: `nginx_use_custom_cert: true`).
 - Данные инстанса — в `roles/nginx/vars/<instance>.yml` (`nginx_server_name`, `nginx_include_conf_list`, переопределение дефолтных переменных `nginx_issue_certificates`, `nginx_use_custom_cert` и др.).
 - Собственные сертификаты: `nginx_use_custom_cert: true` + файлы `files/<host>/<instance>/ssl/{cert.pem,key.pem}`.
 - Остальные роли используют значения по умолчанию (`defaults/`) и `group_vars`/`host_vars`; дополнительно ничего передавать не нужно.
@@ -62,17 +62,17 @@ ansible-playbook --syntax-check playbooks/main.yml
 ansible-playbook -e nginx_instance=acme playbooks/main.yml
 
 # 3. Сайт-инстанс с выпуском сертификата
-ansible-playbook -e nginx_instance=<site> -e nginx_certbot_email=admin@example.com playbooks/main.yml
+ansible-playbook -e nginx_instance=<server_name> -e nginx_certbot_email=admin@example.com playbooks/main.yml
 
 # 4. Сайт-инстанс с собственным сертификатом (без certbot)
-ansible-playbook -e nginx_instance=<site> -e nginx_use_custom_cert=true playbooks/main.yml
+ansible-playbook -e nginx_instance=<server_name> -e nginx_use_custom_cert=true playbooks/main.yml
 
 # 5. Сухой прогон (без изменения хостов)
 ansible-playbook --check -e nginx_instance=acme playbooks/main.yml
-ansible-playbook --check -e nginx_instance=<site> playbooks/main.yml
+ansible-playbook --check -e nginx_instance=<server_name> playbooks/main.yml
 
 # 6. Повторный запуск — идемпотентно; certbot продлевает сертификат при приближении к истечению
-ansible-playbook -e nginx_instance=<site> playbooks/main.yml
+ansible-playbook -e nginx_instance=<server_name> playbooks/main.yml
 ```
 
 Перед запуском:
