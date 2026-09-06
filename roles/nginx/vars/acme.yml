@@ -1,2 +1,5 @@
+nginx_issue_certificates: false
+nginx_generate_dhparams: false
+
 nginx_include_conf_list:
   - "{{ nginx_conf_d }}/80.conf"

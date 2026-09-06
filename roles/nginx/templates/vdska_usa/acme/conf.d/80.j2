@@ -3,6 +3,12 @@ server {
     listen [::]:80 default_server;
     server_name _;
 
+    # healthcheck
+    location = /acme {
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
     # location for ACME-challenge
     location ^~ /.well-known/acme-challenge/ {
         root {{ nginx_static_root }};
