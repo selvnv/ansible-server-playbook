@@ -32,3 +32,12 @@
       --non-interactive
       --agree-tos
   when: not nginx_cert_stat.stat.exists
+
+- name: Add certbot renewal cron
+  ansible.builtin.cron:
+    name: "certbot renew {{ nginx_instance }}"
+    cron_file: "certbot-{{ nginx_instance | regex_replace('\\.', '-') }}"
+    user: root
+    special_time: daily
+    job: 'certbot renew --config-dir {{ nginx_ssl }} --quiet --deploy-hook "systemctl reload nginx.{{ nginx_instance }}"'
+  when: not nginx_cert_stat.stat.exists
