@@ -84,8 +84,9 @@ ansible-playbook -e nginx_instance=<server_name> playbooks/main.yml
 sudo useradd -m -s /bin/bash -c "User for setup host via Ansible" -G sudo ansible
 ```
 
-```
-ansible ALL=(ALL:ALL) NOPASSWD: ALL
+```bash
+sudo visudo
+# Добавить ansible ALL=(ALL:ALL) NOPASSWD: ALL
 ```
 
 - Указать пакеты, каталоги и правила — в `inventory/production/group_vars/all.yml`, `host_vars/<host>.yml`.
