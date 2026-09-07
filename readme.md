@@ -96,4 +96,9 @@ sudo visudo
 
 - Создать ключ для подключения по SSH к хосту. Добавить приватную часть в `.ssh/` проекта, а публичную - в `authorized_keys` пользователя `ansible` на хосте
 
+Перед запуском плейбука добавить сервер в `known_hosts`
+```bash
+ssh-keyscan -p <sshd_port> -H <server_ip> >> ~/.ssh/known_hosts
+```
+
 - Указать пакеты, каталоги и правила — в `inventory/production/group_vars/all.yml`, `host_vars/<host>.yml`.
