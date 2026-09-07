@@ -96,9 +96,22 @@ sudo visudo
 
 - Создать ключ для подключения по SSH к хосту. Добавить приватную часть в `.ssh/` проекта, а публичную - в `authorized_keys` пользователя `ansible` на хосте
 
+На хосте установить корректного владельца и права
+```bash
+sudo chown -R ansible:ansible /home/ansible/.ssh
+sudo chmod 700 /home/ansible/.ssh
+sudo chmod 600 /home/ansible/.ssh/authorized_keys
+```
+
 Перед запуском плейбука добавить сервер в `known_hosts`
 ```bash
 ssh-keyscan -p <sshd_port> -H <server_ip> >> ~/.ssh/known_hosts
+```
+
+В случае с WSL могут возникнуть проблемы с правами доступа к SSH-ключу, особенно если ключ находится в файловой системе Windows (`/mnt/c`). В этом случае нужно скопировать приватный ключ в файловую систему WSL и установить корректные права на него:
+```bash
+cp .ssh/ansible_ed25519 ~/.ssh
+sudo chmod 600 ~/.ssh/ansible_ed25519
 ```
 
 - Указать пакеты, каталоги и правила — в `inventory/production/group_vars/all.yml`, `host_vars/<host>.yml`.
