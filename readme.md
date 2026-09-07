@@ -75,6 +75,11 @@ ansible-playbook --check -e nginx_instance=<server_name> playbooks/main.yml
 ansible-playbook -e nginx_instance=<server_name> playbooks/main.yml
 ```
 
+При запуске под WSL Ansible может проигнорировать `ansible.cfg` в корне проекта. В этом случае нужно явно указать путь к конфигу в переменной окружения
+```bash
+export ANSIBLE_CONFIG=./ansible.cfg
+```
+
 Перед запуском:
 
 - A-запись домена указывает на хост (нужно для получения сертификата на домен).
@@ -88,5 +93,7 @@ sudo useradd -m -s /bin/bash -c "User for setup host via Ansible" -G sudo ansibl
 sudo visudo
 # Добавить ansible ALL=(ALL:ALL) NOPASSWD: ALL
 ```
+
+- Создать ключ для подключения по SSH к хосту. Добавить приватную часть в `.ssh/` проекта, а публичную - в `authorized_keys` пользователя `ansible` на хосте
 
 - Указать пакеты, каталоги и правила — в `inventory/production/group_vars/all.yml`, `host_vars/<host>.yml`.

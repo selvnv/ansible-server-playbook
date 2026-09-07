@@ -4,3 +4,5 @@ hosts
 .clinerules
 knowledge
 *.log
+.ssh/*
+!.gitkeep
