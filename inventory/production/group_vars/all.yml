@@ -7,7 +7,7 @@ common_group_list:
   - group: "nonroot"
     gid: 20001
   - group: "deploy"
-    gid: 20001
+    gid: 20002
 
 common_user_list:
   - name: nonroot
