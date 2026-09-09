@@ -29,3 +29,9 @@ common_catalog_list:
     owner: root
     group: root
     mode: "0755"
+
+playbook_role_common: true
+playbook_role_packages: true
+playbook_role_ssh: true
+playbook_role_firewall: true
+playbook_role_nginx: false
