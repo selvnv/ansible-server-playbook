@@ -15,3 +15,4 @@ ssh_include_list:
 
 ssh_render_configs: true
 ssh_restart_service: false
+ssh_add_auth_keys: true

@@ -5,3 +5,7 @@
 - name: SSH Restart service
   ansible.builtin.import_tasks: 02_restart_service.yml
   when: ssh_restart_service | bool
+
+- name: SSH Add authorized keys
+  ansible.builtin.import_tasks: 03_add_auth_keys.yml
+  when: ssh_add_auth_keys | bool

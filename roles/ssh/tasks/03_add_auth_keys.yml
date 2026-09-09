@@ -1,0 +1,17 @@
+- name: Collect public key files from catalog
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/ssh_keys"
+    patterns: "*.pub"
+    file_type: file
+    recurse: yes
+  delegate_to: localhost
+  run_once: true
+  register: ssh_keys_found
+
+- name: Deploy SSH public keys
+  ansible.posix.authorized_key:
+    user: "{{ item.path | dirname | basename }}"
+    key: "{{ lookup('file', item.path) }}"
+    state: present
+    exclusive: false
+  loop: "{{ ssh_keys_found.files }}"
