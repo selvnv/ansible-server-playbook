@@ -14,7 +14,7 @@
     group: root
     mode: "0644"
     backup: true
-    notify: Verify configs and reload ssh
+  notify: Verify configs and reload ssh
 
 - name: Render including ssh configs
   ansible.builtin.template:
