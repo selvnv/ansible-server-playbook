@@ -11,6 +11,9 @@ common_user_list:
   - name: nonroot
     group: nonroot
     home: "{{ services_home_root }}/nonroot"
+  - name: deploy
+    group: deploy
+    home: "{{ services_home_root }}/deploy"
 
 common_catalog_list:
   - path: "{{ services_root }}"
