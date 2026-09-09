@@ -1,39 +1,29 @@
-- name: Run common role
+- name: Run selected roles
   hosts:
     - production
   become: true
-  roles:
-    - common
-  when: playbook_role_common | bool
+  tasks:
+    - name: Run common role
+      ansible.builtin.include_role:
+        name: common
+      when: playbook_role_common | bool
 
-- name: Run packages role
-  hosts:
-    - production
-  become: true
-  roles:
-    - packages
-  when: playbook_role_packages | bool
+    - name: Run packages role
+      ansible.builtin.include_role:
+        name: packages
+      when: playbook_role_packages | bool
 
-- name: Run ssh role
-  hosts:
-    - production
-  become: true
-  roles:
-    - ssh
-  when: playbook_role_ssh | bool
+    - name: Run ssh role
+      ansible.builtin.include_role:
+        name: ssh
+      when: playbook_role_ssh | bool
 
-- name: Run firewall role
-  hosts:
-    - production
-  become: true
-  roles:
-    - firewall
-  when: playbook_role_firewall | bool
+    - name: Run firewall role
+      ansible.builtin.include_role:
+        name: firewall
+      when: playbook_role_firewall | bool
 
-- name: Run nginx role
-  hosts:
-    - production
-  become: true
-  roles:
-    - nginx
-  when: playbook_role_nginx | bool
+    - name: Run nginx role
+      ansible.builtin.include_role:
+        name: nginx
+      when: playbook_role_nginx | bool
