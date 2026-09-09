@@ -6,6 +6,8 @@ services_home_root: "{{ services_root }}/home"
 common_group_list:
   - group: "nonroot"
     gid: 20001
+  - group: "deploy"
+    gid: 20001
 
 common_user_list:
   - name: nonroot
