@@ -15,6 +15,8 @@ common_user_list:
     home: "{{ services_home_root }}/nonroot"
   - name: deploy
     group: deploy
+    groups:
+      - www-data
     home: "{{ services_home_root }}/deploy"
 
 common_catalog_list:
