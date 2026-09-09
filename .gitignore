@@ -6,3 +6,4 @@ knowledge
 *.log
 .ssh/*
 !.gitkeep
+*.pem
