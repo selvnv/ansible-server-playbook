@@ -1,11 +1,11 @@
 - name: Collect public key files from catalog
   ansible.builtin.find:
-    paths: "{{ role_path }}/files/ssh_keys"
+    paths: "{{ role_path }}/files/{{ inventory_hostname }}/ssh_keys"
     patterns: "*.pub"
     file_type: file
     recurse: yes
   delegate_to: localhost
-  run_once: true
+  become: false
   register: ssh_keys_found
 
 - name: Deploy SSH public keys
