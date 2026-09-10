@@ -29,7 +29,7 @@ nginx_ssl_certificate_key: "{{ (nginx_ssl ~ '/key.pem') if nginx_use_custom_cert
 nginx_ssl_dhparams: "{{ nginx_ssl }}/dhparams.pem"
 
 nginx_catalog_list:
-  - { path: "{{ nginx_static_root }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_static_root }}", owner: "www-data", group: "www-data", mode: "0775" }
   - { path: "{{ nginx_conf_root }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_var_root }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_log_root }}", owner: "www-data", group: "www-data", mode: "0755" }
