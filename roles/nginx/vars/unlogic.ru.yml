@@ -1,0 +1,4 @@
+nginx_server_name: "unlogic.ru"
+
+nginx_include_conf_list:
+  - "{{ nginx_conf_d }}/443.conf"
