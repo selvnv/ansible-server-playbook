@@ -25,7 +25,7 @@ nginx_instance_directories:
   - { path: "{{ nginx_base_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_log_base_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_instance_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_static_dir }}", owner: "www-data", group: "www-data", mode: "0775" }
+  - { path: "{{ nginx_static_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_conf_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_common_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_conf_d_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
