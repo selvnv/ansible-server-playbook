@@ -19,40 +19,43 @@
 
 Типовые инстансы:
 
-- `acme` — nginx на порту 80, один на хост. Нужен для выпуска  Let's Encrypt сертификатов.
-- `<server_name>` — виртуальный хост на порту 443 (сертификат — через certbot или собственный).
+- `acme` — nginx на порту 80, один на хост. Нужен для выпуска Let's Encrypt сертификатов.
+- `web` — nginx на порту 443, один на хост. Содержит несколько виртуальных хостов (`selfplace.ru`, `unlogic.ru` и др.).
 
 Структура каталогов инстанса:
 
 ```
-/services
-|-- apps
-|   `-- nginx/<instance>
-|       |-- static/                 # корень сайта / webroot acme
-|       |-- conf/
-|       |   |-- nginx.conf
-|       |   |-- mime.types
-|       |   |-- common/             # общие для виртхостов http/ssl-параметры
-|       |   |-- conf.d/             # server-блоки: 80.conf, 443.conf
-|       |   `-- ssl/                # сертификаты
-|       `-- var/                    # pid и пр.
-`-- logs
-    `-- nginx/<instance>            # error.log, access.log
+/services/apps/nginx/<instance>/
+|-- conf/
+|   |-- nginx.conf
+|   |-- common/                     # общие http/ssl-параметры
+|   |   |-- http_params.conf
+|   |   |-- ssl_params.conf
+|   |   `-- mime.types
+|   |-- conf.d/                     # server-блоки (по одному на vhost)
+|   |   `-- <server_name>/<server_name>.conf
+|   `-- ssl/
+|       |-- dhparams.pem
+|       |-- live/<server_name>/{fullchain.pem, privkey.pem}
+|       `-- custom/<server_name>/{fullchain.pem, privkey.pem}
+|-- static/<server_name>/...        # webroot по vhost
+|-- var/nginx.pid
+`-- logs -> /services/logs/nginx/<instance>/
 ```
 
 Плюс systemd-юнит `/etc/systemd/system/nginx.<instance>.service`.
 
 ## Переменные для запуска
 
-- `nginx_instance` — **обязательно**. Примеры: `acme`, `<server_name>`.
-- `nginx_certbot_email` — обязательно при выпуске сертификата на домен через Let's Encrypt (не нужно для `acme` инстанса и не нужно, если используется собственный сертификат: `nginx_use_custom_cert: true`).
-- Данные инстанса — в `roles/nginx/vars/<instance>.yml` (`nginx_server_name`, `nginx_include_conf_list`, переопределение дефолтных переменных `nginx_issue_certificates`, `nginx_use_custom_cert` и др.).
-- Собственные сертификаты: `nginx_use_custom_cert: true` + файлы `files/<host>/<instance>/ssl/{cert.pem,key.pem}`.
+- `nginx_instance` — **обязательно**. Примеры: `acme`, `web`.
+- `nginx_certbot_email` — обязательно при выпуске сертификата на домен через Let's Encrypt (нужно только для vhost'ов с `ssl.type: "letsencrypt"`; не нужно для `acme` и для vhost'ов с собственным сертификатом).
+- Данные инстанса — в `roles/nginx/vars/<instance>.yml`: `nginx_instance_port` и `nginx_vhosts` (список vhost'ов: `server_name` + `ssl.type`, где `type` = `none` / `letsencrypt` / `custom`).
+- Собственные сертификаты: `ssl.type: "custom"` + файлы `files/<host>/<instance>/ssl/<server_name>/{fullchain.pem,privkey.pem}`.
 - Остальные роли используют значения по умолчанию (`defaults/`) и `group_vars`/`host_vars`; дополнительно ничего передавать не нужно.
 
 ## Запуск плейбука
 
-При деплое инстансов nginx порядок важен: сначала `acme`, затем другие инстансы (иначе на момент выпуска нет challenge-сервера).
+При деплое инстансов nginx порядок важен: сначала `acme`, затем `web` (иначе на момент выпуска сертификата нет challenge-сервера).
 
 ```bash
 # 1. Проверка синтаксиса
@@ -61,18 +64,15 @@ ansible-playbook --syntax-check playbooks/main.yml
 # 2. ACME-инстанс (первым при первом деплое)
 ansible-playbook -e nginx_instance=acme playbooks/main.yml
 
-# 3. Сайт-инстанс с выпуском сертификата
-ansible-playbook -e nginx_instance=<server_name> -e nginx_certbot_email=admin@example.com playbooks/main.yml
+# 3. Web-инстанс (все vhost'ы из vars/web.yml, включая выпуск LE-сертификатов)
+ansible-playbook -e nginx_instance=web -e nginx_certbot_email=admin@example.com playbooks/main.yml
 
-# 4. Сайт-инстанс с собственным сертификатом (без certbot)
-ansible-playbook -e nginx_instance=<server_name> -e nginx_use_custom_cert=true playbooks/main.yml
-
-# 5. Сухой прогон (без изменения хостов)
+# 4. Сухой прогон (без изменения хостов)
 ansible-playbook --check -e nginx_instance=acme playbooks/main.yml
-ansible-playbook --check -e nginx_instance=<server_name> playbooks/main.yml
+ansible-playbook --check -e nginx_instance=web playbooks/main.yml
 
-# 6. Повторный запуск — идемпотентно; certbot продлевает сертификат при приближении к истечению
-ansible-playbook -e nginx_instance=<server_name> playbooks/main.yml
+# 5. Повторный запуск — идемпотентно; certbot продлевает сертификат при приближении к истечению
+ansible-playbook -e nginx_instance=web playbooks/main.yml
 ```
 
 При запуске под WSL Ansible может проигнорировать `ansible.cfg` в корне проекта. В этом случае нужно явно указать путь к конфигу в переменной окружения
@@ -125,12 +125,9 @@ export ANSIBLE_CONFIG=./ansible.cfg
 # Базовая настройка, без nginx (по умолчанию)
 ansible-playbook playbooks/main.yml
 
-# Запуск с настройкой базового инстанса для получения Let's Encrypt сертификатов на домены
+# ACME-инстанс для получения Let's Encrypt сертификатов на домены
 ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=acme" playbooks/main.yml
 
-# Запуск с настройкой инстанса Nginx для selfplace.ru
-ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=selfplace.ru" -e "nginx_certbot_email=<mail>" playbooks/main.yml
-
-# Запуск с настройкой инстанса Nginx для unlogic.ru
-ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=unlogic.ru" -e "nginx_use_custom_cert=true" playbooks/main.yml
+# Web-инстанс: все vhost'ы (selfplace.ru — letsencrypt, unlogic.ru — custom) из vars/web.yml
+ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=web" -e "nginx_certbot_email=<mail>" playbooks/main.yml
 ```
