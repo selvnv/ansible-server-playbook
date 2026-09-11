@@ -13,7 +13,7 @@ server {
         ssl_certificate_key {{ nginx_ssl_custom_dir }}/{{ nginx_vhost.server_name }}/privkey.pem;
     {% endif %}
 
-    ssl_dhparam {{ nginx_ssl_dir }}dhparams.pem;
+    ssl_dhparam {{ nginx_ssl_dir }}/dhparams.pem;
 
     include {{ nginx_common_dir }}/ssl_params.conf;
 

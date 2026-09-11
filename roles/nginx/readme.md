@@ -21,7 +21,7 @@
 │       │   ├── selfplace.ru/{fullchain.pem, privkey.pem}
 │       │   └── example.com/{fullchain.pem, privkey.pem}
 │       └── custom/                # сторонние сертификаты (с контроллера)
-│           └── unlogic.ru/{cert.pem, key.pem}
+│           └── unlogic.ru/{fullchain.pem, privkey.pem}
 │
 ├── logs/                          # симлинк на /services/logs/nginx/<instance>/
 │

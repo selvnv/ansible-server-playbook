@@ -28,6 +28,9 @@
     owner: www-data
     group: www-data
     backup: true
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+      loop_var: nginx_vhost
   notify: Verify configs and reload nginx
 
 - name: Template instance config
