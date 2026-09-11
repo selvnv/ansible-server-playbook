@@ -5,7 +5,7 @@
     mode: "0644"
     owner: www-data
     group: www-data
-  with_filetree: "{{ inventory_hostname }}/{{ nginx_instance }}/common"
+  with_filetree: "{{ role_path }}/templates/{{ inventory_hostname }}/{{ nginx_instance }}/common"
   when: item.state == 'file' and item.path.endswith('.j2')
   notify: Verify configs and reload nginx
 

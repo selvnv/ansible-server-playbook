@@ -35,7 +35,7 @@ nginx_instance_directories:
   - { path: "{{ nginx_ssl_live_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
   - { path: "{{ nginx_ssl_custom_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
 nginx_instance_symlinks:
-  - { path: "{{ nginx_instance_dir }}/logs", dest: "{{ nginx_log_dir }}" }
+  - { link: "{{ nginx_instance_dir }}/logs", target: "{{ nginx_log_dir }}" }
 
 # instance for ACME-challenge
 nginx_acme_instance: "acme"
