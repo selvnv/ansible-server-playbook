@@ -25,6 +25,7 @@
       -m "{{ nginx_certbot_email }}"
       --non-interactive
       --agree-tos
+    creates: "{{ nginx_ssl_live_dir }}/{{ nginx_vhost.server_name }}/fullchain.pem"
 
 - name: Add certbot renewal cron
   ansible.builtin.cron:
