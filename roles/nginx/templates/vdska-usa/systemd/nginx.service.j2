@@ -7,10 +7,10 @@ ConditionFileIsExecutable=/usr/sbin/nginx
 
 [Service]
 Type=forking
-PIDFile={{ nginx_pid_path }}
-ExecStartPre=/usr/sbin/nginx -t -q -c {{ nginx_conf_root }}/nginx.conf -g 'daemon on; master_process on;'
-ExecStart=/usr/sbin/nginx -c {{ nginx_conf_root }}/nginx.conf -g 'daemon on; master_process on;'
-ExecReload=/usr/sbin/nginx -c {{ nginx_conf_root }}/nginx.conf -s reload
+PIDFile={{ nginx_var_dir }}/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -q -c {{ nginx_conf_dir }}/nginx.conf -g 'daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx -c {{ nginx_conf_dir }}/nginx.conf -g 'daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -c {{ nginx_conf_dir }}/nginx.conf -s reload
 ExecStop=/usr/sbin/nginx -s quit
 TimeoutStopSec=10
 KillMode=mixed

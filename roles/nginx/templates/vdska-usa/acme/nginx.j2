@@ -1,23 +1,23 @@
 user www-data;
 worker_processes auto;
 worker_cpu_affinity auto;
-pid {{ nginx_pid_path }};
-error_log {{ nginx_err_log_path }};
+pid {{ nginx_var_dir }}/nginx.pid;
+error_log {{ nginx_log_dir }}/error.log;
 
 events {
     worker_connections 768;
 }
 
 http {
-    include {{ nginx_common }}/http_params.conf;
-    include {{ nginx_mime_types_path }};
+    include {{ nginx_common_dir }}/http_params.conf;
+    include {{ nginx_common_dir }}/mime.types;
     default_type application/octet-stream;
 
-    access_log {{ nginx_access_log_path }};
+    access_log {{ nginx_log_dir }}/access.log;
 
     gzip on;
 
-    {% for path in nginx_include_conf_list%}
-        include {{ path }};
+    {% for nginx_vhost in nginx_vhosts%}
+    include {{ nginx_conf_d_dir }}/{{ nginx_vhost.server_name }}/{{ nginx_vhost.server_name }}.conf;
     {% endfor %}
 }
