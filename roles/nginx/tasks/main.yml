@@ -14,6 +14,9 @@
 - name: Create instance directories
   ansible.builtin.include_tasks: 02_create_instance_directories.yml
 
+- name: Create instance directories
+  ansible.builtin.include_tasks: 02_create_instance_symlinks.yml
+
 - name: Create vhost directories
   ansible.builtin.include_tasks: 03_create_vhost_directories.yml
   loop: "{{ nginx_vhosts }}"

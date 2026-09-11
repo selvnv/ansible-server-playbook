@@ -6,3 +6,4 @@
     owner: www-data
     group: www-data
   with_filetree: "{{ inventory_hostname }}/{{ nginx_instance }}/static/{{ nginx_vhost.server_name }}"
+  when: item.state == 'file'

@@ -1,6 +1,6 @@
 - name: Create nginx instance symlinks
   ansible.builtin.file:
     path: "{{ item.link }}"
-    src: "{{ item.dest }}"
+    src: "{{ item.target }}"
     state: link
   loop: "{{ nginx_instance_symlinks }}"
