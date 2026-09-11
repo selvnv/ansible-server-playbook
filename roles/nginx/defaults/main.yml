@@ -1,43 +1,44 @@
 nginx_check_prerequisites: true
-nginx_create_catalogs: true
-nginx_issue_certificates: true
 nginx_generate_dhparams: true
-nginx_template_configs: true
-nginx_template_static: true
+nginx_generate_configs: true
 nginx_template_service: true
+
+nginx_base_dir: "{{ services_apps_root }}/nginx"
+nginx_log_base_dir: "{{ services_logs_root }}/nginx"
+
+nginx_instance_dir: "{{ nginx_base_dir }}/{{ nginx_instance }}"
+nginx_static_dir: "{{ nginx_instance_dir }}/static"
+
+nginx_conf_dir: "{{ nginx_instance_dir }}/conf"
+nginx_common_dir: "{{ nginx_conf_dir }}/common"
+nginx_conf_d_dir: "{{ nginx_conf_dir }}/conf.d"
+nginx_ssl_dir: "{{ nginx_conf_dir }}/ssl"
+
+nginx_ssl_live_dir: "{{ nginx_ssl_dir }}/live"
+nginx_ssl_custom_dir: "{{ nginx_ssl_dir }}/custom"
+
+nginx_var_dir: "{{ nginx_instance_dir }}/var"
+nginx_log_dir: "{{ nginx_log_base_dir }}/{{ nginx_instance }}"
+
+
+nginx_instance_directories:
+  - { path: "{{ nginx_base_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_log_base_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_instance_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_static_dir }}", owner: "www-data", group: "www-data", mode: "0775" }
+  - { path: "{{ nginx_conf_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_common_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_conf_d_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_ssl_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_var_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_log_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_ssl_live_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+  - { path: "{{ nginx_ssl_custom_dir }}", owner: "www-data", group: "www-data", mode: "0755" }
+nginx_instance_symlinks:
+  - { path: "{{ nginx_instance_dir }}/logs", dest: "{{ nginx_log_dir }}" }
 
 # instance for ACME-challenge
 nginx_acme_instance: "acme"
 
-nginx_use_custom_cert: false
-
-nginx_static_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/static"
-nginx_conf_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/conf"
-nginx_var_root: "{{ services_apps_root }}/nginx/{{ nginx_instance }}/var"
-nginx_log_root: "{{ services_logs_root }}/nginx/{{ nginx_instance }}"
-# Configs to include into nginx.conf
-nginx_conf_d: "{{ nginx_conf_root }}/conf.d"
-# Reusable params configs
-nginx_common: "{{ nginx_conf_root }}/common"
-# Server certificates, keys  etc.
-nginx_ssl: "{{ nginx_conf_root }}/ssl"
 # ACME-challenges data for all instances
 nginx_acme_root: "{{ services_apps_root }}/nginx/{{ nginx_acme_instance }}/static"
-
-nginx_ssl_certificate: "{{ (nginx_ssl ~ '/cert.pem') if nginx_use_custom_cert else (nginx_ssl ~ '/live/' ~ nginx_server_name ~ '/fullchain.pem') }}"
-nginx_ssl_certificate_key: "{{ (nginx_ssl ~ '/key.pem') if nginx_use_custom_cert else (nginx_ssl ~ '/live/' ~ nginx_server_name ~ '/privkey.pem') }}"
-nginx_ssl_dhparams: "{{ nginx_ssl }}/dhparams.pem"
-
-nginx_catalog_list:
-  - { path: "{{ nginx_static_root }}", owner: "www-data", group: "www-data", mode: "0775" }
-  - { path: "{{ nginx_conf_root }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_var_root }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_log_root }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_common }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_conf_d }}", owner: "www-data", group: "www-data", mode: "0755" }
-  - { path: "{{ nginx_ssl }}", owner: "root", group: "root", mode: "0755" }
-
-nginx_pid_path: "{{ nginx_var_root }}/nginx.pid"
-nginx_err_log_path: "{{ nginx_log_root }}/error.log"
-nginx_access_log_path: "{{ nginx_log_root }}/access.log"
-nginx_mime_types_path: "{{ nginx_conf_root }}/mime.types"

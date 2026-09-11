@@ -1,0 +1,40 @@
+- name: Template common files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ nginx_common_dir }}/{{ item.path | regex_replace('\\.j2$', '.conf') }}"
+    mode: "0644"
+    owner: www-data
+    group: www-data
+  with_filetree: "{{ inventory_hostname }}/{{ nginx_instance }}/common"
+  when: item.state == 'file' and item.path.endswith('.j2')
+  notify: Verify configs and reload nginx
+
+- name: Copy common files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ nginx_common_dir }}/{{ item.path }}"
+    mode: "0644"
+    owner: www-data
+    group: www-data
+  with_filetree: "{{ inventory_hostname }}/{{ nginx_instance }}/common"
+  when: item.state == 'file'
+  notify: Verify configs and reload nginx
+
+- name: Template virtual hosts
+  ansible.builtin.template:
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/conf.d/{{ nginx_vhost.server_name }}/{{ nginx_vhost.server_name }}.j2"
+    dest: "{{ nginx_conf_d_dir }}/{{ nginx_vhost.server_name }}/{{ nginx_vhost.server_name }}.conf"
+    mode: "0644"
+    owner: www-data
+    group: www-data
+    backup: true
+  notify: Verify configs and reload nginx
+
+- name: Template instance config
+  ansible.builtin.template:
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/nginx.j2"
+    dest: "{{ nginx_conf_dir }}/nginx.conf"
+    mode: "0644"
+    owner: www-data
+    group: www-data
+  notify: Verify configs and reload nginx

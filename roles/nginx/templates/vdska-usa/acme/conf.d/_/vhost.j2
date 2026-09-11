@@ -1,7 +1,7 @@
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
+    listen {{ nginx_instance_port }};
+    listen [::]:{{ nginx_instance_port }};
+    server_name {{ nginx_vhost.server_name }};
 
     # healthcheck
     location = /acme {
@@ -11,7 +11,7 @@ server {
 
     # location for ACME-challenge
     location ^~ /.well-known/acme-challenge/ {
-        root {{ nginx_static_root }};
+        root {{ nginx_acme_root }};
     }
 
     location / {

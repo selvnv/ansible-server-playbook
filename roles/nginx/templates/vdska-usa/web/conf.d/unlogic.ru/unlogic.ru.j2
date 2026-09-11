@@ -1,0 +1,26 @@
+server {
+    listen {{ nginx_instance_port }} ssl;
+    listen [::]:{{ nginx_instance_port }} ssl;
+    server_name {{ nginx_vhost.server_name }};
+
+    {% if nginx_vhost.ssl.type == 'letsencrypt' %}
+        ssl_certificate {{ nginx_ssl_live_dir }}/{{ nginx_vhost.server_name }}/fullchain.pem;
+        ssl_certificate_key {{ nginx_ssl_live_dir }}/{{ nginx_vhost.server_name }}/privkey.pem;
+    {% endif %}
+
+    {% if nginx_vhost.ssl.type == 'custom' %}
+        ssl_certificate {{ nginx_ssl_custom_dir }}/{{ nginx_vhost.server_name }}/fullchain.pem;
+        ssl_certificate_key {{ nginx_ssl_custom_dir }}/{{ nginx_vhost.server_name }}/privkey.pem;
+    {% endif %}
+
+    ssl_dhparam {{ nginx_ssl_dir }}dhparams.pem;
+
+    include {{ nginx_common_dir }}/ssl_params.conf;
+
+    root {{ nginx_static_dir }}/{{ nginx_vhost.server_name }};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

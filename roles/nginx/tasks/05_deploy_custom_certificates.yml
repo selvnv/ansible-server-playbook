@@ -1,0 +1,15 @@
+- name: Deploy custom certificate
+  ansible.builtin.copy:
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/ssl/{{ nginx_vhost.server_name }}/fullchain.pem"
+    dest: "{{ nginx_ssl_custom_dir }}/fullchain.pem"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy custom private key
+  ansible.builtin.copy:
+    src: "{{ inventory_hostname }}/{{ nginx_instance }}/ssl/{{ nginx_vhost.server_name }}/privkey.pem"
+    dest: "{{ nginx_ssl_custom_dir }}/privkey.pem"
+    owner: root
+    group: root
+    mode: "0600"

@@ -1,3 +1,39 @@
+#### Целевая структура каталогов
+
+```
+/services/apps/nginx/<instance>/
+├── conf/
+│   ├── nginx.conf                 # главный конфиг: user, pid, events, http { include ... }
+│   ├── mime.types                 # общий для инстанса
+│   ├── common/                    # общие переиспользуемые параметры (опционально для vhost)
+│   │   ├── http_params.conf
+│   │   └── ssl_params.conf
+│   ├── conf.d/                    # server-блоки
+│   │   ├── selfplace.ru
+│   │   │   └── selfplace.ru.conf
+│   │   ├── example.com
+│   │   │   └── example.com.conf
+│   │   └── unlogic.ru
+│   │       └── unlogic.ru.conf
+│   └── ssl/
+│       ├── dhparams.pem           # Общий на инстанс (для всех вирт. хостов)
+│       ├── live/                  # Let's Encrypt (certbot --config-dir)
+│       │   ├── selfplace.ru/{fullchain.pem, privkey.pem}
+│       │   └── example.com/{fullchain.pem, privkey.pem}
+│       └── custom/                # сторонние сертификаты (с контроллера)
+│           └── unlogic.ru/{cert.pem, key.pem}
+│
+├── logs/                          # симлинк на /services/logs/nginx/<instance>/
+│
+├── static/                        # webroot: по подкаталогу на vhost
+│   ├── selfplace.ru/
+│   │   └── index.html
+│   └── unlogic.ru/
+│       └── index.html
+└── var/
+    └── nginx.pid
+```
+
 #### Деплой
 
 При запуске плейбука, для выполнения роли `nginx` необходимо передать значение переменной 

@@ -1,7 +1,7 @@
 - name: Ensure instance variable is defined
-  fail:
+  ansible.builtin.fail:
     msg: "Required variable 'nginx_instance' (pass via -e nginx_instance=<name>)"
-  when: nginx_instance is undefined
+  when: nginx_instance is not defined
 
 - name: Load instance variables
   ansible.builtin.include_vars:
@@ -11,30 +11,43 @@
   ansible.builtin.import_tasks: 01_check_prerequisites.yml
   when: nginx_check_prerequisites | bool
 
-- name: Create catalogs
-  ansible.builtin.import_tasks: 02_create_catalogs.yml
-  when: nginx_create_catalogs | bool
+- name: Create instance directories
+  ansible.builtin.include_tasks: 02_create_instance_directories.yml
 
-- name: Issue certificates
-  ansible.builtin.import_tasks: 03_issue_certificates.yml
-  when: (nginx_issue_certificates | bool) and not (nginx_use_custom_cert | bool)
+- name: Create vhost directories
+  ansible.builtin.include_tasks: 03_create_vhost_directories.yml
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: nginx_vhost
 
-- name: Deploy custom certificate
-  ansible.builtin.import_tasks: 04_deploy_custom_cert.yml
-  when: nginx_use_custom_cert | bool
+- name: Issue Let's Encrypt certificates
+  ansible.builtin.include_tasks: 04_issue_letsencrypt_certificates.yml
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: nginx_vhost
+  when: nginx_vhost.ssl.type == 'letsencrypt'
 
-- name: Generate dhparams
-  ansible.builtin.import_tasks: 05_generate_dhparams.yml
+- name: Deploy custom certificates
+  ansible.builtin.include_tasks: 05_deploy_custom_certificates.yml
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: nginx_vhost
+  when: nginx_vhost.ssl.type == 'custom'
+
+- name: Generate DH parameters
+  ansible.builtin.import_tasks: 06_generate_dhparams.yml
   when: nginx_generate_dhparams | bool
 
-- name: Template configs
-  ansible.builtin.import_tasks: 06_template_configs.yml
-  when: nginx_template_configs | bool
+- name: Deploy vhost static content
+  ansible.builtin.include_tasks: 07_copy_static.yml
+  loop: "{{ nginx_vhosts }}"
+  loop_control:
+    loop_var: nginx_vhost
 
-- name: Template static
-  ansible.builtin.import_tasks: 07_template_static.yml
-  when: nginx_template_static | bool
+- name: Generate nginx configuration
+  ansible.builtin.import_tasks: 08_template_configs.yml
+  when: nginx_generate_configs | bool
 
-- name: Deploy service
-  ansible.builtin.import_tasks: 08_template_service.yml
+- name: Configure instance systemd service
+  ansible.builtin.import_tasks: 09_template_service.yml
   when: nginx_template_service | bool

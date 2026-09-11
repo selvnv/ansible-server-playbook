@@ -1,0 +1,8 @@
+- name: Copy static files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ nginx_static_dir }}/{{ nginx_vhost.server_name }}/{{ item.path }}"
+    mode: "0644"
+    owner: www-data
+    group: www-data
+  with_filetree: "{{ inventory_hostname }}/{{ nginx_instance }}/static/{{ nginx_vhost.server_name }}"

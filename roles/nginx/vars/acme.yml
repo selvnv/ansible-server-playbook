@@ -1,5 +1,6 @@
-nginx_issue_certificates: false
-nginx_generate_dhparams: false
+nginx_instance_port: 80
 
-nginx_include_conf_list:
-  - "{{ nginx_conf_d }}/80.conf"
+nginx_vhosts:
+  - server_name: "_"
+    ssl:
+      type: "none"

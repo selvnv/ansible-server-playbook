@@ -1,0 +1,9 @@
+nginx_instance_port: 443
+
+nginx_vhosts:
+  - server_name: "selfplace.ru"
+    ssl:
+      type: "letsencrypt"
+  - server_name: "unlogic.ru"
+    ssl:
+      type: "custom"

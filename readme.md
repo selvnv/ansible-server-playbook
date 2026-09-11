@@ -115,3 +115,22 @@ sudo chmod 600 ~/.ssh/ansible_ed25519
 ```
 
 - Указать пакеты, каталоги и правила — в `inventory/production/group_vars/all.yml`, `host_vars/<host>.yml`.
+
+
+Реальные примеры запуска:
+```bash
+# Задать путь к конфигу через переменную окружения (для WSL)
+export ANSIBLE_CONFIG=./ansible.cfg
+
+# Базовая настройка, без nginx (по умолчанию)
+ansible-playbook playbooks/main.yml
+
+# Запуск с настройкой базового инстанса для получения Let's Encrypt сертификатов на домены
+ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=acme" playbooks/main.yml
+
+# Запуск с настройкой инстанса Nginx для selfplace.ru
+ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=selfplace.ru" -e "nginx_certbot_email=<mail>" playbooks/main.yml
+
+# Запуск с настройкой инстанса Nginx для unlogic.ru
+ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=unlogic.ru" -e "nginx_use_custom_cert=true" playbooks/main.yml
+```

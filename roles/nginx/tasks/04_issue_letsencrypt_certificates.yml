@@ -3,11 +3,6 @@
     msg: "Required variable 'nginx_certbot_email' (pass via -e nginx_certbot_email=<name>)"
   when: nginx_certbot_email is undefined
 
-- name: Check if certificate already exists
-  ansible.builtin.stat:
-    path: "{{ nginx_ssl_certificate }}"
-  register: nginx_cert_stat
-
 - name: Fail if certbot is not installed
   ansible.builtin.fail:
     msg: "certbot is not installed on {{ inventory_hostname }}"
@@ -19,19 +14,17 @@
     return_content: true
   register: acme_health
   failed_when: acme_health.status != 200 or acme_health.content != 'OK'
-  when: not nginx_cert_stat.stat.exists
 
 - name: Get Let's Encrypt certificate
   ansible.builtin.command:
     cmd: >-
       certbot certonly --webroot
-      --config-dir {{ nginx_ssl }}
+      --config-dir {{ nginx_ssl_dir }}
       -w "{{ nginx_acme_root }}"
-      -d "{{ nginx_server_name }}"
+      -d "{{ nginx_vhost.server_name }}"
       -m "{{ nginx_certbot_email }}"
       --non-interactive
       --agree-tos
-  when: not nginx_cert_stat.stat.exists
 
 - name: Add certbot renewal cron
   ansible.builtin.cron:
@@ -39,5 +32,4 @@
     cron_file: "certbot-{{ nginx_instance | regex_replace('\\.', '-') }}"
     user: root
     special_time: daily
-    job: 'certbot renew --config-dir {{ nginx_ssl }} --quiet --deploy-hook "systemctl reload nginx.{{ nginx_instance }}"'
-  when: not nginx_cert_stat.stat.exists
+    job: 'certbot renew --config-dir {{ nginx_ssl_dir }} --quiet --deploy-hook "systemctl reload nginx.{{ nginx_instance }}"'
