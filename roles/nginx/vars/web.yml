@@ -7,3 +7,6 @@ nginx_vhosts:
   - server_name: "unlogic.ru"
     ssl:
       type: "custom"
+  - server_name: "imagetool.ru"
+    ssl:
+      type: "letsencrypt"

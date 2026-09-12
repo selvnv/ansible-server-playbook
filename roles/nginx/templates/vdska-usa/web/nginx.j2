@@ -12,6 +12,7 @@ http {
     include {{ nginx_common_dir }}/http_params.conf;
     include {{ nginx_common_dir }}/mime.types;
     default_type application/octet-stream;
+    include {{ nginx_common_dir }}/upstreams.conf;
 
     access_log {{ nginx_log_dir }}/access.log;
 
