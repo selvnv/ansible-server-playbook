@@ -1,6 +1,6 @@
 server {
-    listen {{ nginx_instance_port }} ssl;
-    listen [::]:{{ nginx_instance_port }} ssl;
+    listen {{ nginx_instance_port }} ssl http2;
+    listen [::]:{{ nginx_instance_port }} ssl http2;
     server_name {{ nginx_vhost.server_name }};
 
     {% if nginx_vhost.ssl.type == 'letsencrypt' %}
