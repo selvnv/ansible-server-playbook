@@ -8,7 +8,7 @@ packages_apt_install_list:
   - ufw
   - openssl
 
-ssh_port: "24762"
+ssh_port: "22"
 
 playbook_role_common: true
 playbook_role_packages: true
