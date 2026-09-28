@@ -10,3 +10,6 @@ nginx_vhosts:
   - server_name: "imagetool.ru"
     ssl:
       type: "letsencrypt"
+  - server_name: "bakerybook.ru"
+    ssl:
+      type: "letsencrypt"
