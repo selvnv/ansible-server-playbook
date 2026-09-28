@@ -18,7 +18,7 @@ server {
     include {{ nginx_common_dir }}/ssl_params.conf;
 
     root {{ nginx_static_dir }}/{{ nginx_vhost.server_name }};
-    index cookbook-chef.html;q
+    index cookbook-chef.html;
 
     location / {
         try_files $uri $uri/ =404;
