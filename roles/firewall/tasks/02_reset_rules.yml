@@ -1,0 +1,3 @@
+- name: Reset ufw to installation defaults
+  community.general.ufw:
+    state: reset

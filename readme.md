@@ -125,6 +125,9 @@ export ANSIBLE_CONFIG=./ansible.cfg
 # Базовая настройка, без nginx (по умолчанию)
 ansible-playbook playbooks/main.yml
 
+# Привести правила фаервола в соответствие с плейбуком
+ansible-playbook playbooks/main.yml -e firewall_reset=true
+
 # ACME-инстанс для получения Let's Encrypt сертификатов на домены
 ansible-playbook -e "playbook_role_nginx=true" -e "nginx_instance=acme" playbooks/main.yml
 

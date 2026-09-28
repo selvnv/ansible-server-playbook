@@ -2,14 +2,18 @@
   ansible.builtin.import_tasks: 01_check_prerequisites.yml
   when: firewall_check_prerequisites | bool
 
+- name: Firewall reset rules
+  ansible.builtin.import_tasks: 02_reset_rules.yml
+  when: firewall_reset | bool
+
 - name: Firewall set rules
-  ansible.builtin.import_tasks: 02_set_rules.yml
+  ansible.builtin.import_tasks: 03_set_rules.yml
   when: firewall_set_rules | bool
 
 - name: Firewall set default policies
-  ansible.builtin.import_tasks: 03_default_policy.yml
+  ansible.builtin.import_tasks: 04_default_policy.yml
   when: firewall_default_policy | bool
 
 - name: Firewall enable
-  ansible.builtin.import_tasks: 04_enable.yml
+  ansible.builtin.import_tasks: 05_enable.yml
   when: firewall_enable | bool

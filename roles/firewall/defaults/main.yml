@@ -2,6 +2,7 @@ firewall_check_prerequisites: true
 firewall_set_rules: true
 firewall_default_policy: true
 firewall_enable: true
+firewall_reset: false
 
 firewall_default_incoming_policy: "deny"
 firewall_default_outgoing_policy: "allow"
